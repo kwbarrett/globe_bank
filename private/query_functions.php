@@ -11,7 +11,8 @@
     function find_subject($id){
         global $db;
 
-        $sql = "select * from subjects where id = '" . $id ."'";
+        $sql = "select * from subjects where id = '" . db_escape($db,$id) ."'";
+        echo $sql;
         $result = mysqli_query($db,$sql);
         confirm_result_set($result);
         $subject = mysqli_fetch_assoc($result);
@@ -29,9 +30,9 @@
         }
 
         $sql = "insert into subjects (menu_name,position, visible) values(";
-        $sql .= "'" .$subject['menu_name'] . "',";
-        $sql .= "'" .$subject['position'] . "',";
-        $sql .= "'" .$subject['visible'] ."'";
+        $sql .= "'" .db_escape($db,$subject['menu_name']) . "',";
+        $sql .= "'" .db_escape($db,$subject['position']) . "',";
+        $sql .= "'" .db_escape($db,$subject['visible']) ."'";
         $sql .= ")";
 
         $result = mysqli_query($db,$sql);
@@ -54,11 +55,11 @@
         }
 
         $sql = "update subjects ";
-        $sql .= "set menu_name = '" .$subject['menu_name'] ."', ";
-        $sql .= "position = '" .$subject['position']. "', ";
-        $sql .= "visible = '" .$subject['visible']. "' ";
+        $sql .= "set menu_name = '" .db_escape($db,$subject['menu_name']) ."', ";
+        $sql .= "position = '" .db_escape($db,$subject['position']). "', ";
+        $sql .= "visible = '" .db_escape($db,$subject['visible']). "' ";
         $sql .= "where ";
-        $sql .= "id = '" .$id . "' ";
+        $sql .= "id = '" .db_escape($db,$id) . "' ";
         $sql .= "limit 1";
 
         //echo $sql;
@@ -76,7 +77,7 @@
         global $db;
 
         $sql = "delete from subjects ";
-        $sql .= "where id = '" . $id . "' ";
+        $sql .= "where id = '" . db_escape($db,$id) . "' ";
         $sql .= "limit 1";
 
         $result = mysqli_query($db,$sql);
@@ -108,7 +109,7 @@
         $sql = "select p.id,p.menu_name, p.position,p.visible, p.subject_id,p.content, s.menu_name as subject ";
         $sql .= "from pages as p ";
         $sql .= "join subjects s on p.subject_id = s.id ";
-        $sql .= "where p.id = '" . $id . "'";
+        $sql .= "where p.id = '" . db_escape($db,$id) . "'";
 
         $result = mysqli_query($db, $sql);
         confirm_result_set($result);
@@ -128,12 +129,12 @@
         }
 
         $sql = "update pages ";
-        $sql .= "set menu_name = '" .$page['menu_name'] ."', ";
-        $sql .= "subject_id = '" . $page['subject_id'] . "', ";
-        $sql .= "position = '" .$page['position'] ."', ";
-        $sql .= "visible = '" .$page['visible'] ."',";
-        $sql .= "content = '" .$page['content'] . "' ";
-        $sql .= "where id = '" . $id ."' ";
+        $sql .= "set menu_name = '" .db_escape($db,$page['menu_name']) ."', ";
+        $sql .= "subject_id = '" . db_escape($db,$page['subject_id']) . "', ";
+        $sql .= "position = '" .db_escape($db,$page['position']) ."', ";
+        $sql .= "visible = '" .db_escape($db,$page['visible']) ."',";
+        $sql .= "content = '" .db_escape($db,$page['content']) . "' ";
+        $sql .= "where id = '" . db_escape($db,$id) ."' ";
         $sql .= "limit 1";
 
         $result = mysqli_query($db,$sql);
@@ -152,7 +153,7 @@
         global $db;
 
         $sql = "delete from pages ";
-        $sql .= "where id = '" . $id . "' ";
+        $sql .= "where id = '" . db_escape($db,$id) . "' ";
         $sql .= "limit 1";
 
         $result = mysqli_query($db,$sql);
@@ -179,11 +180,11 @@
         }
 
         $sql = "insert into pages (menu_name,subject_id, position, visible, content) values( ";
-        $sql .= "'" . $page['menu_name'] . "', ";
-        $sql .= "'" . $page['subject_id'] . "', ";
-        $sql .= "'" . $page['position'] . "', ";
-        $sql .= "'" . $page['visible'] . "', ";
-        $sql .= "'" . $page['content'] . "' ";
+        $sql .= "'" . db_escape($db,$page['menu_name']) . "', ";
+        $sql .= "'" . db_escape($db,$page['subject_id']) . "', ";
+        $sql .= "'" . db_escape($db,$page['position']) . "', ";
+        $sql .= "'" . db_escape($db,$page['visible']) . "', ";
+        $sql .= "'" . db_escape($db,$page['content']) . "' ";
         $sql .= ")";
 
         $result = mysqli_query($db,$sql);
@@ -239,7 +240,7 @@
         }
 
         $current_id = isset($page['id']) ? $page['id']:'0';
-        
+
         if(!has_unique_page_menu_name($page['menu_name'],$current_id)){
             $errors[] = "Name is already in use.";
         }

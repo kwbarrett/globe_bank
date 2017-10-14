@@ -9,7 +9,7 @@ function url_for($script_path) {
 }
 
 function u($string="") {
-  return urlencode($string); 
+  return urlencode($string);
 }
 
 function raw_u($string="") {
@@ -56,6 +56,10 @@ function display_errors($errors=array()) {
         $output .= "</div>";
     }
     return $output;
+}
+
+function db_escape($connection, $string){
+    return mysqli_real_escape_string($connection,$string);
 }
 
 ?>

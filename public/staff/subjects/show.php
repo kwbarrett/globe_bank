@@ -3,7 +3,7 @@
 <?php
     $id = isset($_GET['id']) ? $_GET['id'] : '1';
 
-    $sql = "select * from subjects where id = '" . $id ."'";
+    $sql = "select * from subjects where id = '" . db_escape($db,$id) ."'";
     $result = mysqli_query($db,$sql);
     confirm_result_set($result);
 
@@ -17,7 +17,7 @@
 <div id="content">
     <div class="subject show">
         <a class="back-link" href="<?= url_for('staff/subjects/index.php'); ?>">&laquo; Back to List</a>
-        
+
         <h1>Subject: <?= h($subject['menu_name']);?></h1>
         <div class="attributes">
             <dl>
