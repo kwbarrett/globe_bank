@@ -1,8 +1,15 @@
 <?php
-    function find_all_subjects(){
+    function find_all_subjects($options=[]){
         global $db;
 
-        $sql = "select * from subjects order by position ASC";
+        $visible = isset($options['visible']) ? $options['visible'] : false;
+
+        $sql = "select * from subjects ";
+        //$sql .= "where 1=1 ";
+        if($visible){
+            $sql .= "where visible = true ";
+        }
+        $sql .= "order by position ASC";
         $result = mysqli_query($db,$sql);
 
         return $result;
@@ -119,11 +126,16 @@
         return $page;
     }
 
-    function find_pages_by_subject_id($subject_id){
+    function find_pages_by_subject_id($subject_id,$options=[]){
         global $db;
+
+        $visible = isset($options['visible']) ? $options['visible'] : false;
 
         $sql = "select * from pages ";
         $sql .= "where subject_id = '" . db_escape($db,$subject_id) ."' ";
+        if($visible){
+            $sql .= "and visible = true ";
+        }
         $sql .= "order by position ASC ";
 
         $result = mysqli_query($db, $sql);
