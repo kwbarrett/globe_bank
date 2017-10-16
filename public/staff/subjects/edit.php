@@ -11,7 +11,7 @@ if (is_post_request()){
     $subject = [];
     $subject['menu_name'] = $_POST['menu_name'] ? $_POST['menu_name'] : '';
     $subject['position'] = $_POST['position'] ? $_POST['position'] : '';
-    $subject['visible'] = $_POST['visible'] ? $_POST['visible'] : '';
+    $subject['visible'] = $_POST['visible'] ? $_POST['visible'] : '0';
 
     $result = update_subject($id,$subject);
     if($result === true){
