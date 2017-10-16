@@ -119,6 +119,19 @@
         return $page;
     }
 
+    function find_pages_by_subject_id($subject_id){
+        global $db;
+
+        $sql = "select * from pages ";
+        $sql .= "where subject_id = '" . db_escape($db,$subject_id) ."' ";
+        $sql .= "order by position ASC ";
+
+        $result = mysqli_query($db, $sql);
+        confirm_result_set($result);
+
+        return $result;
+    }
+
     function update_page($id,$page){
         global $db;
 
@@ -145,8 +158,6 @@
             db_disconnect($db);
             exit;
         }
-
-
     }
 
     function delege_page($id){
@@ -164,10 +175,6 @@
             db_disconnect($db);
             exit;
         }
-
-
-
-
     }
 
     function insert_page($page){
@@ -230,6 +237,7 @@
     }
 
     function validate_page($page){
+
         $errors = [];
         // menu_name
         if(is_blank($page['menu_name'])) {

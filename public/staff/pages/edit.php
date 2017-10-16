@@ -15,8 +15,9 @@ if (is_post_request()){
     $page['menu_name'] = $_POST['menu_name'] ? $_POST['menu_name']:'';
     $page['subject_id'] = $_POST['subject_id'] ? $_POST['subject_id']:'';
     $page['position'] = $_POST['position'] ? $_POST['position']:'';
-    $page['visible'] = $_POST['visible'] ? $_POST['visible']:'';
+    $page['visible'] = $_POST['visible'] ? $_POST['visible']:'0';
     $page['content'] = $_POST['content'] ? $_POST['content']:'';
+    //var_dump($page);
 
     $result = update_page($id,$page);
     if($result === true){
@@ -80,7 +81,7 @@ $page_title = "Edit Page";
             <dl>
                 <dt>Visible</dt>
                 <dd>
-                    <input type="hidden" name="visible" value="0" />
+                    <input type="hidden" name="visible" value="" />
                     <input type="checkbox" name="visible" value="1" <?php if($page['visible'] == 1){echo "checked";} ?>/>
                 </dd>
             </dl>
