@@ -3,7 +3,6 @@
 <?php
 
     $page_set = find_all_pages();
-
     $page_title = 'Pages';
 ?>
 
@@ -25,6 +24,7 @@
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
+                    <th>&nbsp;</th>
                 </tr>
                 <?php while($page = mysqli_fetch_assoc($page_set)) { ?>
                     <tr>
@@ -34,6 +34,7 @@
                         <td><?= $page['visible'] == 1 ? 'true':'false';?></td>
                         <td><?= h($page['menu_name']);?></td>
                         <td><a href="<?= url_for('/staff/pages/show.php?id='.h(u($page['id']))); ?>">View</a></td>
+                        <td><a target="_blank" href="<?= url_for('/index.php?preview=true&id='.h(u($page['id']))); ?>">Preview</a></td>
                         <td><a href="<?= url_for('/staff/pages/edit.php?id='.h(u($page['id']))); ?>">Edit</a></td>
                         <td><a href="<?= url_for('/staff/pages/delete.php?id='.h(u($page['id']))); ?>">Delete</a></td>
                     </tr>

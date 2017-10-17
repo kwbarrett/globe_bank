@@ -5,21 +5,29 @@
         $visible = isset($options['visible']) ? $options['visible'] : false;
 
         $sql = "select * from subjects ";
-        //$sql .= "where 1=1 ";
         if($visible){
             $sql .= "where visible = true ";
         }
         $sql .= "order by position ASC";
+        //echo $sql;
+        //exit;
         $result = mysqli_query($db,$sql);
 
         return $result;
     }
 
-    function find_subject($id){
+    function find_subject($id, $options=[]){
         global $db;
 
-        $sql = "select * from subjects where id = '" . db_escape($db,$id) ."'";
-        echo $sql;
+        $visible = isset($options['visible']) ? $options['visible'] : false;
+
+        $sql = "select * from subjects ";
+        $sql .= "where id = '" . db_escape($db,$id) ."' ";
+        if($visible){
+            $sql .= "and visible = true";
+        }
+        //echo $sql;
+        //exit;
         $result = mysqli_query($db,$sql);
         confirm_result_set($result);
         $subject = mysqli_fetch_assoc($result);
@@ -104,19 +112,23 @@
         $sql = "select p.id,p.menu_name, p.position,p.visible, s.menu_name as subject ";
         $sql .= "from pages as p ";
         $sql .= "join subjects s on p.subject_id = s.id ";
+
         $sql .= "order by p.subject_id ASC, p.position ASC";
         $result = mysqli_query($db,$sql);
 
         return $result;
     }
 
-    function find_page_by_id($id){
+    function find_page_by_id($id,$options = []){
         global $db;
 
-        $sql = "select p.id,p.menu_name, p.position,p.visible, p.subject_id,p.content, s.menu_name as subject ";
-        $sql .= "from pages as p ";
-        $sql .= "join subjects s on p.subject_id = s.id ";
-        $sql .= "where p.id = '" . db_escape($db,$id) . "'";
+        $visible = isset($options['visible']) ? $options['visible'] : false;
+
+        $sql = "select * from pages ";
+        $sql .= "where id = '" . db_escape($db,$id) . "' " ;
+        if($visible){
+            $sql .= "and visible = true ";
+        }
 
         $result = mysqli_query($db, $sql);
         confirm_result_set($result);
@@ -130,14 +142,14 @@
         global $db;
 
         $visible = isset($options['visible']) ? $options['visible'] : false;
-
         $sql = "select * from pages ";
         $sql .= "where subject_id = '" . db_escape($db,$subject_id) ."' ";
         if($visible){
             $sql .= "and visible = true ";
         }
         $sql .= "order by position ASC ";
-
+        //echo $sql;
+        //exit;
         $result = mysqli_query($db, $sql);
         confirm_result_set($result);
 

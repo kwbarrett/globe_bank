@@ -2,6 +2,7 @@
 
 <?php
     $page_title = 'Show Page';
+
     include(SHARED_PATH . '/staff_header.php');
 
     $id = isset($_GET['id']) ? $_GET['id']:'1';
@@ -15,6 +16,7 @@
 
         <h1>Page: <?= h($page['menu_name']);?></h1>
         <div class="attributes">
+            <?php $subject = find_subject($page['subject_id']);?>
             <dl>
                 <dt>
                     Menu Name
@@ -28,7 +30,7 @@
                     Subject
                 </dt>
                 <dd>
-                    <?= h($page['subject']);?>
+                    <?= h($subject['menu_name']);?>
                 </dd>
             </dl>
             <dl>
