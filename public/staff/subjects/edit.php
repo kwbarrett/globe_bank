@@ -1,20 +1,26 @@
 <?php
 
 require_once('../../../private/initialize.php');
-
+require_login();
 if(!isset($_GET['id'])){
     redirect_to(url_for('/staff/subjects/index.php'));
 }
 $id = $_GET['id'];
+$subject_set = find_all_subjects();
+$subject_count = mysqli_num_rows($subject_set);
+mysqli_free_result($subject_set);
 
 if (is_post_request()){
     $subject = [];
     $subject['menu_name'] = $_POST['menu_name'] ? $_POST['menu_name'] : '';
     $subject['position'] = $_POST['position'] ? $_POST['position'] : '';
     $subject['visible'] = $_POST['visible'] ? $_POST['visible'] : '0';
+    $subject['start_pos'] = $_POST['start_pos'] ? $_POST['start_pos']: '0';
 
     $result = update_subject($id,$subject);
+    $position = shift_subject_positions($subject['start_pos'], $subject['position'], $id);
     if($result === true){
+        $_SESSION['message'] = "Subject updated successfully!";
         redirect_to(url_for('/staff/subjects/show.php?id=' . $id));
     }else{
         $errors = $result;
@@ -23,9 +29,7 @@ if (is_post_request()){
     $subject = find_subject($id);
 }
 
-$subject_set = find_all_subjects();
-$subject_count = mysqli_num_rows($subject_set);
-mysqli_free_result($subject_set);
+
 
 ?>
 
@@ -49,6 +53,7 @@ mysqli_free_result($subject_set);
             <dl>
                 <dt>Position</dt>
                 <dd>
+                    <input type="hidden" name="start_pos" value="<?= $subject['position'] ;?>">
                     <select name="position">
                         <?php
                             for ($i=1; $i <= $subject_count; $i++) { ?>

@@ -1,6 +1,7 @@
 <?php require_once('../../../private/initialize.php'); ?>
 
 <?php
+    require_login();
     $subject_set = find_all_subjects();
 ?>
 
@@ -20,17 +21,20 @@
         <th>Position</th>
         <th>Visible</th>
   	    <th>Name</th>
+        <th>Pages</th>
         <th>&nbsp;</th>
   	    <th>&nbsp;</th>
         <th>&nbsp;</th>
   	  </tr>
 
       <?php while ($subject = mysqli_fetch_assoc($subject_set)){ ?>
+        <?php $page_count = count_pages_by_subject_id($subject['id']); ?>
         <tr>
           <td><?php echo $subject['id']; ?></td>
           <td><?php echo $subject['position']; ?></td>
           <td><?php echo $subject['visible'] == 1 ? 'true' : 'false'; ?></td>
-    	    <td><?php echo $subject['menu_name']; ?></td>
+    	  <td><?php echo $subject['menu_name']; ?></td>
+          <td><?= $page_count; ?></td>
           <td><a class="action" href="<?php echo url_for('/staff/subjects/show.php?id='. h(u($subject['id'])))?>">View</a></td>
           <td><a class="action" href="<?= url_for('/staff/subjects/edit.php?id='. h(u($subject['id'])))?>">Edit</a></td>
           <td><a class="action" href="<?= url_for('/staff/subjects/delete.php?id='. h(u($subject['id'])))?>">Delete</a></td>

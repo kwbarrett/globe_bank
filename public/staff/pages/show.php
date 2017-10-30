@@ -8,15 +8,15 @@
     $id = isset($_GET['id']) ? $_GET['id']:'1';
 
     $page = find_page_by_id($id);
+    $subject = find_subject($page['subject_id']);
 ?>
-
 <div id="content">
     <div class="page show">
-        <a class="back-link" href="<?= url_for('staff/pages/index.php'); ?>">&laquo; Back to List</a>
+        <a class="back-link" href="<?= url_for('staff/subjects/show.php?id=' . h(u($subject['id']))); ?>">&laquo; Back to Subject Page</a>
 
         <h1>Page: <?= h($page['menu_name']);?></h1>
         <div class="attributes">
-            <?php $subject = find_subject($page['subject_id']);?>
+
             <dl>
                 <dt>
                     Menu Name

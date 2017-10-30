@@ -1,8 +1,13 @@
 <?php
     $page_id = isset($page_id) ? $page_id : '';
     $subject_id = isset($subject_id) ? $subject_id : '';
-    $visible = $visible == 'true' ? true : false;
-    //echo $visible;
+    $preview = false;
+    if(isset($_GET['preview'])){
+        $preview = $_GET['preview'] == 'true' ? true : false;
+    }
+    $visible = !$preview;
+    //$visible = $visible == 'true' ? true : false;
+    //echo 'visible = ' . $visible;
     //exit;
 ?>
 

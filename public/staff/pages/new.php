@@ -1,6 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
-
+require_login();
 if(is_post_request()){
     $page = [];
     $page['menu_name'] = $_POST['menu_name'];
@@ -12,23 +12,21 @@ if(is_post_request()){
     $result = insert_page($page);
     if($result === true){
         $new_id = mysqli_insert_id($db);
+        $_SESSION['message'] = "Page created successfully!";
         redirect_to(url_for('/staff/pages/show.php?id=' . $new_id));
     }else{
         $errors = $result;
     }
 }else{
-    //edirect_to(url_for('/staff/pages/new.php'));
+    //redirect_to(url_for('/staff/pages/new.php'));
     $page = [];
     $page['menu_name'] = '';
-    $page['subject_id'] = '';
+    $page['subject_id'] = isset($_GET['subject_id']) ? $_GET['subject_id'] : '1';
     $page['visible'] = '';
     $page['position'] = '';
 }
 
-$page_set = find_all_pages();
-$page_count = mysqli_num_rows($page_set)+1;
-mysqli_free_result($page_set);
-
+$page_count = count_pages_by_subject_id($page['subject_id']) + 1;
 
 $subjects = find_all_subjects();
 mysqli_fetch_assoc($subjects);
@@ -41,7 +39,7 @@ $page_title = "New Page";
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
-    <a class="back_link" href="<?= url_for('/staff/pages/index.php')?>">&laquo; Back to list</a>
+    <a class="back_link" href="<?= url_for('/staff/subjects/show.php?id=' . h(u($page['subject_id'])))?>">&laquo; Back to list</a>
 
     <div class="page new">
         <h1>New Page</h1>

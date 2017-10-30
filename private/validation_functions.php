@@ -6,6 +6,8 @@
   // * uses === to avoid false positives
   // * better than empty() which considers "0" to be empty
   function is_blank($value) {
+    //echo $value;
+    //exit;
     return !isset($value) || trim($value) === '';
   }
 
@@ -93,6 +95,14 @@
     return preg_match($email_regex, $value) === 1;
   }
 
+  //has has_valid_password_requirements('Gr33nEgg$&H@m')
+  // must have at least 1 uppercase, 1 lowercase, 1 number, 1 symbol
+  // returns 1 for a match, 0 for no match
+  function has_valid_password_requirements($value){
+      $password_regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/';
+      return preg_match($password_regex, $value) === 1;
+  }
+
   //has_unique_page_menu_name
   //has_unique_page_menu_name('History')
   //Validates uniqueness of page.menu_name
@@ -110,6 +120,19 @@
       $page_count = mysqli_num_rows($page_set);
 
       return $page_count === 0;
+  }
+
+  function has_unique_admin_username($username,$current_id="0"){
+      global $db;
+
+      $sql = "select * from admins ";
+      $sql .= "where username = '" . db_escape($db,$username) ."' ";
+      $sql .= "and id != '" . db_escape($db,$current_id) . "' ";
+
+      $admin_set = mysqli_query($db,$sql);
+      $admin_count = mysqli_num_rows($admin_set);
+
+      return $admin_count === 0;
   }
 
 ?>

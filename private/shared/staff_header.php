@@ -18,6 +18,14 @@
     </header>
     <navigation>
         <ul>
+            <?php if(is_logged_in()){ ?>
+                <li>User: <?= isset($_SESSION['username']) ? $_SESSION['username'] : ''  ;?></li>
+            <?php } ?>
             <li><a href="<? echo url_for('staff/index.php');?>">Menu</a></li>
+            <?php
+                if(isset($_SESSION['username'])){?>
+                    <li><a href="<? echo url_for('staff/logout.php');?>">Logout</a></li>
+            <?php }?>
         </ul>
     </navigation>
+    <?= display_message();?>

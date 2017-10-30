@@ -62,4 +62,19 @@ function db_escape($connection, $string){
     return mysqli_real_escape_string($connection,$string);
 }
 
+function get_and_clear_session_message(){
+    if(isset($_SESSION['message']) && $_SESSION['message'] != ''){
+        $msg = $_SESSION['message'];
+        unset($_SESSION['message']);
+        return $msg;
+    }
+}
+
+function display_message(){
+    $msg = get_and_clear_session_message();
+    if(!is_blank($msg)){
+        return '<div id="message">' . h($msg) . '</div>';
+    }
+}
+
 ?>
